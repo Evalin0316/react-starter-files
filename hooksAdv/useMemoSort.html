@@ -51,6 +51,23 @@
     const [ascending, setAscending] = useState(true);
     const [search, setSearch] = useState('');
 
+    // const filterProducts = useMemo(()=>{
+    //   //過濾
+    //   const filter = [...products].filter((product)=> product.title.match(search));
+
+    //   //排序
+    //   return filter.sort((a,b)=>{
+    //     return ascending ? a.price - b.price : b.price - a.price;
+    //   });
+    // },[ascending,search]);
+
+    const filterProducts = useMemo(()=>{
+      //過濾
+      return  [...products]
+      .filter((product)=> product.title.match(search))
+      .sort((a,b)=> ascending ? a.price - b.price : b.price - a.price);
+    },[ascending,search]);
+
     return (
       <>
         升降冪：
@@ -67,6 +84,16 @@
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        <table className="table">
+          <tbody>
+            {filterProducts.map((product) => {
+              return(<tr key={product.id}>
+              <td>{product.title}</td>
+              <td>{product.price}</td>
+              </tr>)
+            })}
+          </tbody>
+        </table>
       </>
     );
   };

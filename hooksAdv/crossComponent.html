@@ -7,9 +7,24 @@
 <script type="text/babel">
 const { useState, useEffect } = React;
 
+
+const LoginForm = () =>{
+  const [userName,setUserName] = useState('');
+  return (<>
+      <input type="text" value={userName} onChange={e=>setUserName(e.target.value)}/>
+      {userName}
+      <hr />
+  </>)
+}
+
+const Gretting = () =>{
+  return <div>歡迎加入</div>
+}
+
 const App = () => {
   return (<>
-      <hr />
+      <LoginForm/>
+      <Gretting/>
   </>)
 }
 
