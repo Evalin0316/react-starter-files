@@ -6,7 +6,7 @@
 
 <div id="root"></div>
 <script type="text/babel">
-  const { useState, useEffect, useMemo } = React;
+  const { useState, useEffect, useMemo, memo } = React;
   const sampleData = [
     {
       id: 1,
@@ -45,11 +45,31 @@
     },
   ];
 
+  const DataTable = memo(({filterProducts}) =>{
+    console.log(`元件更新觸發`);
+    return (
+      <table className='table'>
+        <tbody>
+          {filterProducts.map((product) => {
+            return (
+              <tr key={product.id}>
+                <td>{product.id}</td>
+                <td>{product.title}</td>
+                <td>{product.price}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
+  })
+
   let num = 0;
   const App = () => {
     const [products, setProducts] = useState(sampleData);
     const [ascending, setAscending] = useState(true);
     const [search, setSearch] = useState('');
+    const [text,setText] = useState('');
 
     const filterProducts = useMemo(() => {
       return [...products]
@@ -63,6 +83,12 @@
 
     return (
       <>
+        <input
+          type='text'
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <br/>
         升降冪：
         <input
           type='checkbox'
@@ -77,18 +103,7 @@
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <table className='table'>
-          <tbody>
-            {filterProducts.map((product) => {
-              return (
-                <tr key={product.id}>
-                  <td>{product.title}</td>
-                  <td>{product.price}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <DataTable filterProducts={filterProducts}/>
       </>
     );
   };

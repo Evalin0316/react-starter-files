@@ -8,6 +8,7 @@
 const { useState, useEffect, createContext, useContext } = React;
 
 const UserContext = createContext({})
+const ThemeContext = createContext({});
 
 const LoginForm = () => {
   const { username, setUsername, setIsLogin } = useContext(UserContext);
@@ -24,19 +25,38 @@ const LoginForm = () => {
 
 const Greeting = () => {
   const { username } = useContext(UserContext);
+  const { theme } = useContext(ThemeContext);
+
   return <>
+  <div style={{ 
+    backgroundColor: theme === "dark" ? "#333" : "#FFF", 
+    color: theme === "dark" ? "#FFF" : "#333",
+    padding: "10px 0"
+   }}>
     { username } 你好, 歡迎登入
+  </div>
   </>
 }
 
 const App = () => {
   const [username, setUsername] = useState('卡斯伯');
   const [isLogin, setIsLogin] = useState(false);
+  const [theme, setTheme] = useState('light');
 
   return (<>
+    <ThemeContext.Provider value={{theme}}>
     <UserContext.Provider value={{ username, setUsername, setIsLogin }}>
-      { isLogin ? <Greeting /> : <LoginForm /> }
+      { isLogin ?
+        <div>
+         <Greeting /> 
+          <label>
+              <input type="checkbox" checked={theme === 'dark'} onChange={(e)=> setTheme(e.target.checked ? 'dark' : 'light')}/> Use dark mode
+          </label>
+        </div>
+        : <LoginForm /> 
+        }
     </UserContext.Provider>
+    </ThemeContext.Provider>
   </>)
 }
 
