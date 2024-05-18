@@ -5,7 +5,7 @@
 <!-- 🔥🔥練習開始🔥🔥 -->
 <div id="root"></div>
 <script type="text/babel">
-  const { useState, useEffect, useMemo, memo } = React;
+  const { useState, useEffect, useMemo, memo, useCallback} = React;
   const sampleData = [
     {
       id: 1,
@@ -45,7 +45,7 @@
   ];
 
   // 使用 memo
-  const DataTable = memo(({filterProducts}) => {
+  const DataTable = memo(({filterProducts,handleCheck}) => {
     console.log(`元件更新觸發`);
     return (<table className='table'>
       <tbody>
@@ -54,6 +54,7 @@
             <tr key={product.id}>
               <td>{product.title}</td>
               <td>{product.price}</td>
+              <td><input type="checkbox" onChange={handleCheck} value={product.title}/></td>
             </tr>
           );
         })}
@@ -67,6 +68,7 @@
     const [ascending, setAscending] = useState(true);
     const [search, setSearch] = useState('');
     const [text, setText] = useState('')
+    const [items,setItem] = useState([]);
 
     const filterProducts = useMemo(() => {
       return [...products]
@@ -77,6 +79,16 @@
           return ascending ? a.price - b.price : b.price - a.price;
         });
     }, [ascending, search]);
+
+    // 傳入一個方法
+    const handleCheck = useCallback((e) =>{
+      console.log('handle check 已經被觸發了');
+      if(e.target.checked){
+        setItem([...items,e.target.value]);
+      }else{
+        setItem(items.filter((item)=>item !== e.target.value));
+      }
+    },[items])
 
     return (
       <>
@@ -99,7 +111,8 @@
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <DataTable filterProducts={filterProducts}></DataTable>
+        <p>選擇的項目：{items}</p>
+        <DataTable filterProducts={filterProducts} handleCheck={handleCheck}></DataTable>
       </>
     );
   };
