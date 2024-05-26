@@ -4,7 +4,7 @@
 <!-- 章節標題 --><div class="mb-4"><h1 class="mt-0 text-muted">ES 模組</h1><small>檔名：<code>esModule.html</code></small></div>
 <!-- 🔥🔥練習開始🔥🔥 -->
 <div id="root"></div>
-<script>
+<script type="module">
 // 因為 type="text/babel" 與 type="module" 相衝，所以課程前期不會用到 ESModule 定義元件
 // #1 匯出匯入本一體，先掌握匯出更容易理解匯入
 // #1-1 將標籤定義 <script type="module">
@@ -18,18 +18,28 @@
 // #2 匯入方法
 // #2-1 預設匯入
 // 因為預設匯出沒有名字，所以可以為它命名
+import obj from './defaultExport.js'
+console.log(obj);
+obj.fn();
+
+// #2-2
 
 
 // #2-2 具名匯入
 // 單一匯入（建議寫法）
+import { fn } from './defaultExport.js'
+fn()
 
 
 // 全部匯入（不建議，錯誤較難發現）
-
+import * as allFn from './defaultExport.js';
+console.log(allFn);
+allFn.fn();
 
 // #3 SideEffect
 // sideEffect.js（沒有包含匯出的檔案）
-
+import './sideEffect.js';
+console.log($);
 
 </script>
 <!-- 🙇🙇練習結束🙇🙇 -->
