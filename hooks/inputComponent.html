@@ -6,10 +6,37 @@
 <!--  -->
 <div id="root"></div>
 <script type="text/babel">
+const { useState } = React;
+
+const SearchBox = ({text,onSearchHandler,id}) =>{
+  return(
+    <>
+      <label htmlFor={id}>搜尋</label>
+      <input id={id} 
+      type="text" 
+      className="form-control"
+      value={text} onChange={onSearchHandler} />
+    </>
+  )
+}
+
 
 const App = () => {
+  // const text = '這裡有一行文字';
+  // #2 定義狀態
+  const [text, setText] = useState('這是一段文字')
+
+  const onSearchHandler = (e) =>{
+    console.log(e.target.value);
+    setText(e.target.value)
+  }
+  
   return (<div>
-    
+    {text}
+    {/* <input type="text" value={text} /> 在一般的變數下，input 無法綁定值 */}
+    <SearchBox text={text} onSearchHandler={onSearchHandler} id="search2"/>
+    <hr/>
+    {text}
   </div>)
 }
 

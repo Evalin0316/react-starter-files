@@ -5,7 +5,14 @@
 <!-- 🔥🔥練習開始🔥🔥 -->
 <div id="root"></div>
 <script type="text/babel">
-// #1 useState 的方法在哪裡？
+const { useState } = React;
+ // #1 useState 的方法在哪裡？
+ function useCustomState() {
+
+    // 純值,方法(通知元件，值已經更新)
+    return [params,function dispatchSetState(){}]
+ }
+
 
 // #2 useState 僅能在 Component 內運作
 
@@ -14,9 +21,28 @@
 // #3-1 為了讓 React 知道資料已更新，所以會使用另一個方法進行觸發
 const App = () => {
   // #3-2 這影響了許多會操作原始值的方法
+  const [num, setNum] = useState(1);
+  const [arr, setArr] = useState([1,2,3]);
+
+  function removeArrayData() {
+    setArr(arr.filter((item) => item!== arr.length));
+  }
+
+  function addArrayData(){
+    setArr([...arr, arr.length + 1]);
+  }
 
   return (<div>
-    
+      <button onClick={()=> setNum(num + 1)}>{num}</button>
+      <ul>
+        {
+          arr.map((i)=>{
+            return <li key={i}>{i}</li>
+          })
+        }
+      </ul>
+      <button onClick={removeArrayData}>移除陣列最後一個值</button>
+      <button onClick={addArrayData}>新增陣列資料</button>
   </div>)
 }
 

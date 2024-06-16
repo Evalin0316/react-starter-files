@@ -26,21 +26,10 @@ const useMousePosition = () =>{
 }
 
 const App = () => {
-  const [text, setText] = useState('')
-  const [mouse,setMouse] = useState('');
+  const [text, setText] = useState('');
 
-  useEffect(() => {
-    const getMouseEvnet = (e) => {
-      setMouse({
-        x: e.clientX,
-        y: e.clientY
-      })
-    }
-    window.addEventListener('mousemove', getMouseEvnet)
-    return () => window.removeEventListener('mousemove', getMouseEvnet);
+  const mouse = useMousePosition();
   
-  },[])
-
   return (<>
   {mouse.x} {mouse.y}
     <input type="text" onChange={e => {

@@ -23,6 +23,7 @@ const SearchBox = ({onSearchHandler, filterString}) => {
 const App = () => {
   console.log(1);
   const [filterString, setFilterString] = useState('animal');
+  const [text,setText]= useState('animal');
 
   const onSearchHandler = (e) => {
     setFilterString(e.target.value);
@@ -30,12 +31,23 @@ const App = () => {
 
   // #1 useEffect 的觸發時間點
   // 當都不加入任何條件時
+  useEffect(()=>{
+    console.log(3);
+  })
 
 
   // 只有加入一個空陣列
+  // 只有初始化時會執行
+  useEffect(()=>{
+    console.log(4);
+  },[])
+
 
 
   // 加入 state 作為條件
+  useEffect(()=>{
+    console.log('condition');
+  },[filterString,text])
 
 
   // #2 useEffect 的限制，不可在 if 內使用
@@ -43,10 +55,27 @@ const App = () => {
 
   // #3 非同步
   // useEffect callback 本身不能作為 async function 使用
+  useEffect(()=>{
+    // const getPhoto = async() =>{
+    //   const result = await axios.get(`${api}?client_id=${accessKey}&query=${filterString}`);
+    //   console.log(result);
+    // }
+    // getPhoto();
+
+    (async()=>{
+      try{
+        const result = await axios.get(`${api}?client_id=${accessKey}&query=${filterString}`);
+        console.log(result);
+      }catch(e){
+        console.log('錯誤：',e);
+      }
+    })()
+  },[])
 
   
   return (<div>
     {console.log(2)}
+    <input type="text" onChange={e=> setText(e.target.value)}/>
     <SearchBox onSearchHandler={onSearchHandler} filterString={filterString} />
   </div>)
 }
